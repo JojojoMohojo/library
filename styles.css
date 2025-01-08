@@ -1,0 +1,78 @@
+/*RESET STYLESHEET*/
+@import "modern-normalize";
+
+:root {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, figure, p, ol, ul {
+  margin: 0;
+}
+
+ol[role="list"], ul[role="list"] {
+  list-style: none;
+  padding-inline: 0;
+}
+
+h1, h2, h3, h4, h5 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+img {
+  display: block;
+  max-inline-size: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit;
+  font-size: 100%;
+  width: 150px;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+* {
+    margin:0;
+}
+.background-container {
+    height: 100vh;
+    background-image: url("images/library-illustration.png");
+    background-color: #efdbbc;
+    display: flex;
+    padding: 100px auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.bookshelf-container {
+    height: 100vh;
+    width: auto;
+    border: solid #000000 4px;
+    box-sizing: border-box;
+}
+
+.bookshelf-container > img {
+    height: 100%;
+    width: 100%;
+    border: solid #a82f2e 18px;
+    box-sizing: border-box;
+}
+
+.top-shelf {
+    display: grid;
+}
+
+.middle-shelf {
+    display: grid;
+}
+
+.bottom-shelf {
+    display: grid;
+}
