@@ -52,27 +52,62 @@ p, h1, h2, h3, h4, h5, h6 {
 }
 
 .bookshelf-container {
-    height: 100vh;
-    width: auto;
-    border: solid #000000 4px;
-    box-sizing: border-box;
+  height: 100vh;
+  background-image: url("images/bookshelf.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  border: solid #a82f2e 20px;
+  box-shadow: 0 0 0 4px black;
+  box-sizing: border-box;
+  padding: 16px 16px 400px 17px;
 }
 
-.bookshelf-container > img {
-    height: 100%;
-    width: 100%;
-    border: solid #a82f2e 18px;
-    box-sizing: border-box;
+.shelf {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: 154px 219px 207px;
+  column-gap: 30px;
+  align-items: end;
 }
 
-.top-shelf {
-    display: grid;
+.book-container {
+  height: 154px;
+  width: 115px;
+  background-image: url("images/book.png");
+  background-size: cover;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.middle-shelf {
-    display: grid;
+.new-book {
+  
 }
 
-.bottom-shelf {
-    display: grid;
+.icon {
+  height: 35px;
+  width: 35px;
+  color: black;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: inline-block;
+}
+
+.new-book-icon {
+  background-image: url('images/add-box.png'); /* Define the image */
+}
+
+.open-book-icon {
+  background-image: url('images/open-book.png'); /* Define the image */
+}
+
+.book {
+  text-align: center;
+  justify-content: space-between;
+  padding: 30px 10px 30px 10px;
 }

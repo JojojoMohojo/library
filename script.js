@@ -38,6 +38,31 @@ function addBookToLibrary(title, author, genres, pages, haveRead, published, seq
     myLibrary.push(new Book(title, author, pages, genres, haveRead, published, sequels));
 }
 
-function displayBook(book) {
+const shelf = document.querySelector(".shelf");
 
+function displayBook() {
+    while (shelf.querySelector('.book')) {
+        shelf.querySelector('.book').remove();
+    }
+    myLibrary.forEach( (item) => {
+        const book = document.createElement("div");
+        book.id = `Book-${item.id}`;
+        console.log(`${item.id}`);
+        book.classList.add("book-container", "book");
+        book.textContent = item.title;
+        const bookIcon = document.createElement("div");
+        bookIcon.classList.add("icon", "open-book-icon");
+        bookIcon.addEventListener("click", () => {
+            displayBookContent(item);
+        });
+        book.appendChild(bookIcon);
+        shelf.appendChild(book);
+    })
 }
+
+function displayBookContent(book) {
+    console.log(`Clicked on ${book.title}`);
+}
+
+displayBook();
+
