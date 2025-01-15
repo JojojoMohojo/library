@@ -68,7 +68,7 @@ p, h1, h2, h3, h4, h5, h6 {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  border: solid #a82f2e 20px;
+  border: solid #75292b 18px;
   box-shadow: 0 0 0 4px black;
   box-sizing: border-box;
   padding: 16px 16px 400px 17px;
@@ -96,10 +96,6 @@ p, h1, h2, h3, h4, h5, h6 {
   text-align: center;
 }
 
-.new-book {
-  
-}
-
 .icon {
   height: 35px;
   width: 35px;
@@ -118,10 +114,6 @@ p, h1, h2, h3, h4, h5, h6 {
   background-image: url('images/open-book.png'); /* Define the image */
 }
 
-.book {
-  
-}
-
 .book-display {
   position: fixed;
   top: 50%;
@@ -138,6 +130,7 @@ p, h1, h2, h3, h4, h5, h6 {
   margin-top: 30px;
   padding: 60px 135px 210px 125px;
   font-size: 18pt;
+  z-index: 1000;
 }
 
 .left-page,
@@ -152,13 +145,14 @@ p, h1, h2, h3, h4, h5, h6 {
 .right-page {
   padding-left: 60px;
 }
-/*.modal-backdrop {
+
+.modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 999; /* Ensure it's behind the modal
-  display: none; /* Hidden by default
-}*/
+  z-index: 999;
+  display: none;
+}
