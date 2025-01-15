@@ -65,4 +65,3 @@ function displayBookContent(book) {
 }
 
 displayBook();
-
