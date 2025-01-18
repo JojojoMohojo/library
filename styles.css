@@ -44,8 +44,19 @@ input, button, textarea, select {
   box-sizing: border-box;
 }
 
+input, textarea, select {
+  border-radius: 5px;
+  border: 1.5px solid #E5E7EB;
+  height: 1.8rem;
+}
+
 p, h1, h2, h3, h4, h5, h6 {
   overflow-wrap: break-word;
+}
+
+.remove-border-background {
+  background: none;
+  border: none;
 }
 
 * {
@@ -107,11 +118,11 @@ p, h1, h2, h3, h4, h5, h6 {
 }
 
 .new-book-icon {
-  background-image: url('images/add-box.png'); /* Define the image */
+  background-image: url('images/add-box.png');
 }
 
 .open-book-icon {
-  background-image: url('images/open-book.png'); /* Define the image */
+  background-image: url('images/open-book.png');
 }
 
 .book-display {
@@ -125,12 +136,10 @@ p, h1, h2, h3, h4, h5, h6 {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  display: flex;
   box-sizing: border-box;
   margin-top: 30px;
   padding: 60px 135px 210px 125px;
   font-size: 18pt;
-  z-index: 1000;
 }
 
 .left-page,
@@ -146,13 +155,70 @@ p, h1, h2, h3, h4, h5, h6 {
   padding-left: 60px;
 }
 
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+::backdrop {
   background: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-  display: none;
+}
+
+.new-book-display {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 600px;
+  background-image: url("images/book-cover.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  box-sizing: border-box;
+  padding: 120px 125px 0 50px;
+  font-size: 14pt;
+  color: white;
+}
+
+h1 {
+ font-size: 20pt;
+ text-align: center;
+}
+
+fieldset {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+}
+
+.form-row {
+  padding: 0;
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+}
+
+input {
+  width: 400px;
+  padding: 0 5px 0 5px;
+  font-size: 12pt;
+}
+
+input[type="checkbox"] {
+  width: 25px;
+  margin: 0 0 0 10px;
+}
+
+.form-buttons {
+  margin-top: 5px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.form-buttons > button {
+  height: 30px;
+  width: 100px;
+}
+.flex {
+  display: flex;
 }

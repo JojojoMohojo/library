@@ -17,21 +17,59 @@
                 
             </div>
         </div>
-        <div class="modal-backdrop"></div>
-        <div class="book-display">
+        <dialog class="book-display remove-border-background">
             <div class="left-page">
-                <p id="book-title">Title: </p>
-                <p id="book-author">Author: </p>
-                <p id="book-genres">Genres: </p>
-                <p id="book-pages">Pages: </p>
+                <p id="book-title"></p>
+                <p id="book-author"></p>
+                <p id="book-genres"></p>
+                <p id="book-pages"></p>
             </div>
             <div class="right-page">
-                <p id="book-published">Published: </p>
-                <p id="book-read">Read: </p>
-                <p id="book-sequels">Sequels: </p>
-                <button id="close-book">Close book</button>
+                <p id="book-published"></p>
+                <p id="book-sequels"></p>
+                <p id="book-read"></p>
+                <button id="close-book" autofocus>Close book</button>
             </div>
-        </div>        
+        </dialog>
+        <dialog class="new-book-display remove-border-background">
+            <h1>Enter book details here</h1>
+            <form action="" method="get" id="new-book-form">
+                <fieldset class="remove-border-background">
+                    <div class="form-row">
+                        <label for="title">Title</label>
+                        <input id="title-input" type="text" name="title">
+                    </div>
+                    <div class="form-row">
+                        <label for="author">Author</label>
+                        <input id="author-input" type="text" name="author">
+                    </div>
+                    <div class="form-row">
+                        <label for="genres">Genres</label>
+                        <input id="genres-input" type="text" name="genres">
+                    </div>
+                    <div class="form-row">
+                        <label for="pages">Pages</label>
+                        <input id="pages-input" type="number" name="pages">
+                    </div>
+                    <div class="form-row">
+                        <label for="published">Year published</label>
+                        <input id="published-input" type="text" name="published">
+                    </div>
+                    <div class="form-row">
+                        <label for="sequels">Sequels</label>
+                        <input id="sequels" type="text" name="sequels">
+                    </div>
+                    <div class="form-row flex" >
+                        <label for="have-read">Have you read this book?</label>
+                        <input id="have-read-input" type="checkbox" name="have-read">
+                    </div>
+                </fieldset>
+                <div class="form-buttons">
+                    <button type="submit" id="submit-form">Submit</button>
+                    <button id="close-form">Cancel</button>
+                </div>
+            </form>
+        </dialog>        
     </div>
 </body>
 <script src="script.js"></script>

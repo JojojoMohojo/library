@@ -6,7 +6,7 @@ const myLibrary = [
         genres: "Horror",
         pages: 736,
         published: 2000,
-        haveRead: "Read",
+        haveRead: "Yes",
         sequels: "None",
     },
     {
@@ -16,7 +16,7 @@ const myLibrary = [
         genres: "Sci-fi, Dystopian",
         pages: 290,
         published: 1932,
-        haveRead: "Not read",
+        haveRead: "No",
         sequels: "None",
     }
 ]
@@ -27,7 +27,7 @@ function Book(title, author, genres, pages, published, haveRead, sequels) {
     this.genres = Array.isArray(genres) ? genres.join(", ") : genres;
     this.pages = pages;
     this.published = published;
-    this.haveRead = haveRead ? "Read" : "Not read"
+    this.haveRead = haveRead ? "Yes" : "No"
     this.sequels = Array.isArray(sequels) ? sequels.join(", ") : sequels;
     this.info = function() {
         return `${this.title} by ${this.author}, ${this.pages} pages, ${this.haveRead.toLowerCase}`;
@@ -40,12 +40,22 @@ function addBookToLibrary(title, author, genres, pages, haveRead, published, seq
 
 const shelf = document.querySelector(".shelf");
 const display = document.querySelector(".book-display");
-const backdrop = document.querySelector(".modal-backdrop");
-const closeButton = document.querySelector("#close-book");
-display.style.display = "none";
+const closeBookButton = document.querySelector("#close-book");
+const newBookForm = document.querySelector(".new-book-display");
+const newBookButton = document.querySelector(".new-book-icon");
+const closeFormButton = document.querySelector("#close-form");
 
-closeButton.addEventListener("click", () => {
-    closeBook();
+newBookButton.addEventListener("click", () => {
+    newBookForm.showModal();
+})
+
+closeBookButton.addEventListener("click", () => {
+    display.close();
+    display.classList.remove("flex");
+})
+
+closeFormButton.addEventListener("click", () => {
+    newBookForm.close();
 })
 
 function addBooksToShelf() {
@@ -73,20 +83,18 @@ function createBook(item) {
 
 function displayBook(book) {
     console.log(`Clicked on ${book.title}`);
+
+    //Populate the display with book details
     document.getElementById('book-title').textContent = `Title: ${book.title}`;
     document.getElementById('book-author').textContent = `Author: ${book.author}`;
     document.getElementById('book-genres').textContent = `Genres: ${book.genres}`;
     document.getElementById('book-pages').textContent = `Pages: ${book.pages}`;
-    document.getElementById('book-published').textContent = `Published: ${book.published}`;
-    document.getElementById('book-read').textContent = `Read: ${book.haveRead}`;
+    document.getElementById('book-published').textContent = `Year published: ${book.published}`;
+    document.getElementById('book-read').textContent = `Read?: ${book.haveRead}`;
     document.getElementById('book-sequels').textContent = `Sequels: ${book.sequels}`;
-    display.style.display = "flex";
-    backdrop.style.display = "block";
+    display.classList.add("flex");
+    display.showModal();
 }
 
-function closeBook() {
-    display.style.display = "none";
-    backdrop.style.display = "none";
-}
 
 addBooksToShelf();
