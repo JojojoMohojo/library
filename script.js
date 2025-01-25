@@ -66,6 +66,8 @@ closeBookButton.addEventListener("click", () => {
 })
 
 closeFormButton.addEventListener("click", () => {
+    event.preventDefault();
+    clearForm()
     newBookForm.close();
 })
 
