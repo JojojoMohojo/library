@@ -103,8 +103,14 @@ p, h1, h2, h3, h4, h5, h6 {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 30px 10px 30px 10px;
+  padding: 30px 10px 20px 10px;
   text-align: center;
+}
+
+.icon-container {
+  width: 80px;
+  display: flex;
+  justify-content: space-around;
 }
 
 .icon {
@@ -114,7 +120,7 @@ p, h1, h2, h3, h4, h5, h6 {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  display: inline-block;
+
 }
 
 .new-book-icon {
@@ -123,6 +129,10 @@ p, h1, h2, h3, h4, h5, h6 {
 
 .open-book-icon {
   background-image: url('images/open-book.png');
+}
+
+.remove-book-icon {
+  background-image: url('images/trash-can.png')
 }
 
 .book-display {
@@ -139,7 +149,7 @@ p, h1, h2, h3, h4, h5, h6 {
   box-sizing: border-box;
   margin-top: 30px;
   padding: 60px 135px 210px 125px;
-  font-size: 18pt;
+  font-size: 16pt;
 }
 
 .left-page,
@@ -152,7 +162,20 @@ p, h1, h2, h3, h4, h5, h6 {
 }
 
 .right-page {
-  padding-left: 60px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 50px;
+  font-size: 14pt;
+}
+
+.right-page > button {
+  height: 50px;
+  width: 300px;
+  padding: 0px 10px 0px 10px;
+  border-radius: 18px;
+  margin-bottom: 0px;
 }
 
 ::backdrop {
@@ -237,9 +260,9 @@ input[type="checkbox"] {
   background-color: white;
   color: black;
   position: absolute;
-  top: calc(50% - 0.9rem + 28px); /* Adjust this based on the input height */
+  top: calc(50% - 0.9rem + 28px);
   left: -180px;
-  transform: translateY(-50%); /* Center .message vertically with input */
+  transform: translateY(-50%);
 }
 
 .message::before {

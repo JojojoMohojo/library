@@ -1,10 +1,14 @@
+// Shelf elements
 const shelf = document.querySelector(".shelf");
-const display = document.querySelector(".book-display");
-const closeBookButton = document.querySelector("#close-book");
 const newBookForm = document.querySelector(".new-book-display");
 const newBookButton = document.querySelector(".new-book-icon");
+// Book display elements
+const display = document.querySelector(".book-display");
+const closeBookButton = document.querySelector("#close-book");
+const changeReadButton = document.querySelector("#change-read-status");
+const removeBookButton = document.querySelector("#remove-book-button");
+// Form elements
 const form = document.querySelector("#new-book-form");
-// Form inputs
 const titleInput = document.querySelector("#title-input");
 const authorInput = document.querySelector("#author-input");
 const genresInput = document.querySelector("#genres-input");
@@ -15,30 +19,9 @@ const haveReadInput = document.querySelector("#have-read-input");
 const closeFormButton = document.querySelector("#close-form");
 const submitButton = document.querySelector("#submit-button");
 
-const myLibrary = [
-    {
-        id: 1,
-        title: "House of Leaves",
-        author: "Mark Z. Danielewski",
-        genres: "Horror",
-        pages: 736,
-        published: 2000,
-        haveRead: "Yes",
-        sequels: "None",
-    },
-    {
-        id: 2,
-        title: "Brave New World",
-        author: "Aldous Huxley",
-        genres: "Sci-fi, Dystopian",
-        pages: 290,
-        published: 1932,
-        haveRead: "No",
-        sequels: "None",
-    }
-]
-function Book(title, author, genres, pages, published, sequels, haveRead,) {
-    this.id = myLibrary.length + 1;
+let currentBook;
+
+function Book(title, author, genres, pages, published, sequels, haveRead) {
     this.title = title;
     this.author = author;
     this.genres = genres
@@ -46,23 +29,36 @@ function Book(title, author, genres, pages, published, sequels, haveRead,) {
     this.published = published;
     this.haveRead = haveRead;
     this.sequels = sequels.length === 0 ? "None" : sequels;
-    this.info = function() {
-        return `${this.title} by ${this.author}, ${this.pages} pages, ${this.haveRead.toLowerCase}`;
-    }
 }
 
-function addBookToLibrary(title, author, genres, pages,  published, sequels, haveRead) {
-    myLibrary.push(new Book(title, author, genres, pages,  published, sequels, haveRead,));
-    refreshShelf();
-}
+Book.prototype.changeReadStatus = function() {
+    this.haveRead = this.haveRead === "Yes" ? "No" : "Yes";
+    document.getElementById('book-read').textContent = `Read: ${this.haveRead}`;
+    document.getElementById('change-read-status').textContent = `Change status to ${this.haveRead === "Yes" ? '"Not read"' : '"Read"'}`
+};
+
+const myLibrary = [
+    new Book("House of Leaves", "Mark Z. Danielewski", "Horror", 736, 2000, "None", "Yes"),
+    new Book("Brave New World", "Aldous Huxley", "Sci-fi, Dystopian", 290, 1932, "None", "No")
+];
+
+myLibrary.forEach((book, index) => book.id = index + 1);
 
 newBookButton.addEventListener("click", () => {
     newBookForm.showModal();
 })
 
 closeBookButton.addEventListener("click", () => {
-    display.close();
-    display.classList.remove("flex");
+    closeBook();
+})
+
+removeBookButton.addEventListener("click", () => {
+    removeBook(currentBook);
+    closeBook();
+})
+
+changeReadButton.addEventListener("click", () => {
+    currentBook.changeReadStatus();
 })
 
 closeFormButton.addEventListener("click", () => {
@@ -92,9 +88,16 @@ submitButton.addEventListener("click", function () {
     }
 })
 
+function addBookToLibrary(title, author, genres, pages,  published, sequels, haveRead) {
+    const newBook = new Book(title, author, genres, pages,  published, sequels, haveRead);
+    newBook.id = myLibrary.length + 1;
+    myLibrary.push(newBook);
+    refreshShelf();
+}
+
 function refreshShelf() {
-    while (shelf.querySelector('.book')) {
-        shelf.querySelector('.book').remove();
+    while (shelf.querySelector(".book")) {
+        shelf.querySelector(".book").remove();
     }
     myLibrary.forEach( (item) => {
         createBook(item);
@@ -107,27 +110,46 @@ function createBook(item) {
     book.id = `Book-${item.id}`;
     book.classList.add("book-container", "book");
     book.textContent = item.title;
-    const bookIcon = document.createElement("div");
-    bookIcon.classList.add("icon", "open-book-icon");
-    bookIcon.addEventListener("click", () => {
+    const iconContainer = document.createElement("div");
+    iconContainer.classList.add("icon-container");
+    const openIcon = document.createElement("div");
+    openIcon.classList.add("icon", "open-book-icon");
+    openIcon.addEventListener("click", () => {
         displayBook(item);
     });
-    book.appendChild(bookIcon);
+    const removeIcon = document.createElement("div");
+    removeIcon.classList.add("icon", "remove-book-icon");
+    removeIcon.addEventListener("click", () => {
+        removeBook(item);
+    });
+    book.appendChild(iconContainer);
+    iconContainer.appendChild(openIcon);
+    iconContainer.appendChild(removeIcon);
     shelf.appendChild(book);
 }
 
 function displayBook(book) {
-    console.log(`Clicked on ${book.title}`);
     //Populate the display with book details
     document.getElementById('book-title').textContent = `Title: ${book.title}`;
     document.getElementById('book-author').textContent = `Author: ${book.author}`;
     document.getElementById('book-genres').textContent = `Genres: ${book.genres}`;
     document.getElementById('book-pages').textContent = `Pages: ${book.pages}`;
     document.getElementById('book-published').textContent = `Year published: ${book.published}`;
-    document.getElementById('book-read').textContent = `Read?: ${book.haveRead}`;
+    document.getElementById('book-read').textContent = `Read: ${book.haveRead}`;
     document.getElementById('book-sequels').textContent = `Sequels: ${book.sequels}`;
+    document.getElementById('change-read-status').textContent = `Change read status to ${book.haveRead === "Yes" ? '"Not read"' : '"Read"'}`
     display.classList.add("flex");
     display.showModal();
+    currentBook = book;
+}
+
+function closeBook() {
+    display.close();
+    display.classList.remove("flex");
+}
+
+function removeBook(book) {
+    shelf.querySelector(`#Book-${book.id}`).remove();
 }
 
 function validateForm() {
