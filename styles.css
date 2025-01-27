@@ -160,13 +160,17 @@ p, h1, h2, h3, h4, h5, h6 {
   font-size: 14pt;
 }
 
+.right-page > p {
+  font-size: 16pt;
+  font-style: oblique;
+  margin-bottom: 60px;
+}
+
 .right-page > button {
   height: 50px;
   width: 300px;
   padding: 0px 10px 0px 10px;
-  
   margin-bottom: 0px;
-  
 }
 
 button {

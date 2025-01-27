@@ -44,14 +44,14 @@ function Book(title, author, genres, pages, published, sequels, haveRead) {
 }
 
 Book.prototype.changeReadStatus = function() {
-    this.haveRead = this.haveRead === "Yes" ? "No" : "Yes";
-    document.getElementById('book-read').textContent = `Read: ${this.haveRead}`;
-    document.getElementById('change-read-status').textContent = `Change status to ${this.haveRead === "Yes" ? '"Not read"' : '"Read"'}`
+    this.haveRead = this.haveRead ? false : true;
+    document.getElementById('book-read').textContent = `${this.haveRead ? "You have read this book" : "You haven't finished this book yet"}`;
+    document.getElementById('change-read-status').textContent = `${this.haveRead ? "I haven't finished this book yet" : "I have read this book"}`
 };
 
 const myLibrary = [
-    new Book("House of Leaves", "Mark Z. Danielewski", "Horror", 736, 2000, "None", "Yes"),
-    new Book("Brave New World", "Aldous Huxley", "Sci-fi, Dystopian", 290, 1932, "None", "No")
+    new Book("House of Leaves", "Mark Z. Danielewski", "Horror", 736, 2000, "None", true),
+    new Book("Brave New World", "Aldous Huxley", "Sci-fi, Dystopian", 290, 1932, "None", false)
 ];
 
 myLibrary.forEach((book, index) => book.id = index + 1);
@@ -84,7 +84,6 @@ submitButton.addEventListener("click", function () {
     event.preventDefault();
     const validationResult = validateForm();
     if (validationResult.valid) {
-        console.log(haveReadInput.checked);
         addBookToLibrary(
             formatInput(titleInput.value, "Title"),
             formatInput(authorInput.value, "Author"),
@@ -92,12 +91,9 @@ submitButton.addEventListener("click", function () {
             pagesInput.value,
             publishedInput.value,
             validationResult.sequelsArray,
-            haveReadInput.checked ? "Yes" : "No"
+            haveReadInput.checked ? true : false
         );
         newBookForm.close();
-        console.log("Book added successfully!");
-    } else {
-        console.log("Form validation failed");
     }
 })
 
@@ -154,9 +150,9 @@ function displayBook(book) {
     document.getElementById('book-genres').textContent = `Genres: ${book.genres}`;
     document.getElementById('book-pages').textContent = `Pages: ${book.pages}`;
     document.getElementById('book-published').textContent = `Year published: ${book.published}`;
-    document.getElementById('book-read').textContent = `Read: ${book.haveRead}`;
+    document.getElementById('book-read').textContent = `${book.haveRead ? "You have read this book" : "You haven't finished this book yet"}`;
     document.getElementById('book-sequels').textContent = `Sequels: ${book.sequels}`;
-    document.getElementById('change-read-status').textContent = `Change read status to ${book.haveRead === "Yes" ? '"Not read"' : '"Read"'}`
+    document.getElementById('change-read-status').textContent = `${book.haveRead ? "I haven't finished this book yet" : "I have read this book"}`
     display.classList.add("flex");
     display.showModal();
     currentBook = book;
@@ -169,6 +165,7 @@ function closeBook() {
 
 function removeBook(book) {
     shelf.querySelector(`#Book-${book.id}`).remove();
+    myLibrary.splice(book.id - 1, 1);
 }
 
 function validateForm() {
