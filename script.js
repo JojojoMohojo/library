@@ -44,17 +44,17 @@ function Book(title, author, genres, pages, published, sequels, haveRead) {
 }
 
 Book.prototype.changeReadStatus = function() {
-    this.haveRead = this.haveRead ? false : true;
+    this.haveRead = !this.haveRead;
     document.getElementById('book-read').textContent = `${this.haveRead ? "You have read this book" : "You haven't finished this book yet"}`;
     document.getElementById('change-read-status').textContent = `${this.haveRead ? "I haven't finished this book yet" : "I have read this book"}`
 };
 
-const myLibrary = [
+let myLibrary = [
     new Book("House of Leaves", "Mark Z. Danielewski", "Horror", 736, 2000, "None", true),
     new Book("Brave New World", "Aldous Huxley", "Sci-fi, Dystopian", 290, 1932, "None", false)
 ];
 
-myLibrary.forEach((book, index) => book.id = index + 1);
+myLibrary.forEach((book, index) => book.id = Date.now() + index);
 
 newBookButton.addEventListener("click", () => {
     newBookForm.showModal();
@@ -73,14 +73,14 @@ changeReadButton.addEventListener("click", () => {
     currentBook.changeReadStatus();
 })
 
-closeFormButton.addEventListener("click", () => {
+closeFormButton.addEventListener("click", (event) => {
     event.preventDefault();
     clearForm();
     clearErrorMessages();
     newBookForm.close();
 })
 
-submitButton.addEventListener("click", function () {
+submitButton.addEventListener("click", function (event) {
     event.preventDefault();
     const validationResult = validateForm();
     if (validationResult.valid) {
@@ -99,7 +99,7 @@ submitButton.addEventListener("click", function () {
 
 function addBookToLibrary(title, author, genres, pages,  published, sequels, haveRead) {
     const newBook = new Book(title, author, genres, pages,  published, sequels, haveRead);
-    newBook.id = myLibrary.length + 1;
+    newBook.id = Date.now();
     myLibrary.push(newBook);
     refreshShelf();
 }
@@ -165,7 +165,7 @@ function closeBook() {
 
 function removeBook(book) {
     shelf.querySelector(`#Book-${book.id}`).remove();
-    myLibrary.splice(book.id - 1, 1);
+    myLibrary = myLibrary.filter((thisBook) => thisBook.id !== book.id);
 }
 
 function validateForm() {
