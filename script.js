@@ -1,29 +1,3 @@
-// Shelf elements
-const shelf = document.querySelector(".shelf");
-const newBookForm = document.querySelector(".new-book-display");
-const newBookButton = document.querySelector(".new-book-icon");
-// Book display elements
-const display = document.querySelector(".book-display");
-const closeBookButton = document.querySelector("#close-book");
-const changeReadButton = document.querySelector("#change-read-status");
-const removeBookButton = document.querySelector("#remove-book-button");
-// Form elements
-const formElement = document.querySelector("#new-book-form");
-
-const openBookIconSVG = `
-    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M560-564v-68q33-14 67.5-21t72.5-7q26 0 51 4t49 10v64q-24-9-48.5-13.5T700-600q-38 0-73 9.5T560-564Zm0 220v-68q33-14 67.5-21t72.5-7q26 0 51 4t49 10v64q-24-9-48.5-13.5T700-380q-38 0-73 9t-67 27Zm0-110v-68q33-14 67.5-21t72.5-7q26 0 51 4t49 10v64q-24-9-48.5-13.5T700-490q-38 0-73 9.5T560-454ZM260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z"/></svg>
-`;
-
-const removeBookIconSVG = `
-    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
-`;
-
-const addBookIconSVG = `
-    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"/></svg>
-`;
-
-let currentBook;
-
 class Book {
     constructor(title, author, genres, pages, published, sequels, haveRead) {
         this.title = title;
@@ -33,8 +7,8 @@ class Book {
         this.published = published;
         this.haveRead = haveRead;
         this.sequels = sequels.length === 0 ? "None" : sequels;
-    }
-
+    } 
+    
     changeReadStatus() {
         this.haveRead = !this.haveRead;
         document.getElementById('book-read').textContent = `${this.haveRead ? "You have read this book" : "You haven't finished this book yet"}`;
@@ -42,97 +16,64 @@ class Book {
     };
 }
 
-let myLibrary = [
-    new Book("House of Leaves", "Mark Z. Danielewski", "Horror", 736, 2000, "None", true),
-    new Book("Brave New World", "Aldous Huxley", "Sci-fi, Dystopian", 290, 1932, "None", false)
-];
-
-myLibrary.forEach((book, index) => book.id = Date.now() + index);
-
-newBookButton.addEventListener("click", () => {
-    newBookForm.showModal();
-})
-
-closeBookButton.addEventListener("click", () => {
-    closeBook();
-})
-
-removeBookButton.addEventListener("click", () => {
-    removeBook(currentBook);
-    closeBook();
-})
-
-changeReadButton.addEventListener("click", () => {
-    currentBook.changeReadStatus();
-})
-
-function addBookToLibrary(title, author, genres, pages, published, sequels, haveRead) {
-    const newBook = new Book(title, author, genres, pages, published, sequels, haveRead);
-    newBook.id = Date.now();
-    myLibrary.push(newBook);
-    refreshShelf();
-}
-
-function refreshShelf() {
-    while (shelf.querySelector(".book")) {
-        shelf.querySelector(".book").remove();
+class Shelf {
+    constructor(shelf) {
+        this.shelf = shelf
+        this.library = [
+            new Book("House of Leaves", "Mark Z. Danielewski", "Horror", 736, 2000, "None", true),
+            new Book("Brave New World", "Aldous Huxley", "Sci-fi, Dystopian", 290, 1932, "None", false)
+        ];
+        this.library.forEach((book, index) => book.id = Date.now() + index);
     }
-    myLibrary.forEach(createBook);
-    formHandler.clearForm();
-}
 
-function createBook(item) {
-    const book = document.createElement("div");
-    book.id = `Book-${item.id}`;
-    book.classList.add("book-container", "book");
-    book.textContent = item.title;
+    addBookToLibrary(title, author, genres, pages, published, sequels, haveRead) {
+        const book = new Book(title, author, genres, pages, published, sequels, haveRead);
+        book.id = Date.now();
+        this.library.push(book);
+        this.refreshShelf();
+    }
 
-    const iconContainer = document.createElement("div");
-    iconContainer.classList.add("icon-container");
+    refreshShelf() {
+        while (this.shelf.querySelector(".book")) {
+            this.shelf.querySelector(".book").remove();
+        }
+        this.library.forEach((book) => this.createBookOnShelf(book));
+        formHandler.clearForm();
+    }
 
-    const openIcon = document.createElement("div");
-    openIcon.classList.add("icon", "open-book-icon");
-    openIcon.innerHTML = openBookIconSVG;
-    openIcon.addEventListener("click", () => {
-        displayBook(item);
-    });
+    createBookOnShelf(item) {
+        const book = document.createElement("div");
+        book.id = `Book-${item.id}`;
+        book.classList.add("book-container", "book");
+        book.textContent = item.title;
 
-    const removeIcon = document.createElement("div");
-    removeIcon.classList.add("icon", "remove-book-icon");
-    removeIcon.innerHTML = removeBookIconSVG;
-    removeIcon.addEventListener("click", () => {
-        removeBook(item);
-    });
+        const iconContainer = document.createElement("div");
+        iconContainer.classList.add("icon-container");
 
-    book.appendChild(iconContainer);
-    iconContainer.appendChild(openIcon);
-    iconContainer.appendChild(removeIcon);
-    shelf.appendChild(book);
-}
+        const openIcon = document.createElement("div");
+        openIcon.classList.add("icon", "open-book-icon");
+        openIcon.innerHTML = uiHandler.openBookIconSVG;
+        openIcon.addEventListener("click", () => {
+            uiHandler.displayBook(item);
+        });
 
-function displayBook(book) {
-    //Populate the display with book details
-    document.getElementById('book-title').textContent = `Title: ${book.title}`;
-    document.getElementById('book-author').textContent = `Author: ${book.author}`;
-    document.getElementById('book-genres').textContent = `Genres: ${book.genres}`;
-    document.getElementById('book-pages').textContent = `Pages: ${book.pages}`;
-    document.getElementById('book-published').textContent = `Year published: ${book.published}`;
-    document.getElementById('book-read').textContent = `${book.haveRead ? "You have read this book" : "You haven't finished this book yet"}`;
-    document.getElementById('book-sequels').textContent = `Sequels: ${book.sequels}`;
-    document.getElementById('change-read-status').textContent = `${book.haveRead ? "I haven't finished this book yet" : "I have read this book"}`
-    display.classList.add("flex");
-    display.showModal();
-    currentBook = book;
-}
+        const removeIcon = document.createElement("div");
+        removeIcon.classList.add("icon", "remove-book-icon");
+        removeIcon.innerHTML = uiHandler.removeBookIconSVG;
+        removeIcon.addEventListener("click", () => {
+            this.removeBook(item);
+        });
 
-function closeBook() {
-    display.close();
-    display.classList.remove("flex");
-}
+        book.appendChild(iconContainer);
+        iconContainer.appendChild(openIcon);
+        iconContainer.appendChild(removeIcon);
+        this.shelf.appendChild(book);
+    }
 
-function removeBook(book) {
-    shelf.querySelector(`#Book-${book.id}`).remove();
-    myLibrary = myLibrary.filter((thisBook) => thisBook.id !== book.id);
+    removeBook(book) {
+        this.shelf.querySelector(`#Book-${book.id}`).remove();
+        this.library = this.library.filter((thisBook) => thisBook.id !== book.id);
+    }
 }
 
 class FormHandler {
@@ -152,14 +93,14 @@ class FormHandler {
             e.preventDefault();
             this.clearForm();
             this.clearErrorMessages();
-            newBookForm.close();
+            uiHandler.newBookForm.close();
         })
 
         this.submitButton.addEventListener("click", (e) => {
             e.preventDefault();
             const formValues = this.validateForm();
             if (formValues.isValid) {
-                addBookToLibrary(
+                shelf.addBookToLibrary(
                     this.formatInput(formValues.title.value, "Title"),
                     this.formatInput(formValues.author.value, "Author"),
                     formValues.genres,
@@ -169,7 +110,7 @@ class FormHandler {
                     formValues.haveRead.checked
                 );
                 this.clearForm();
-                newBookForm.close();
+                uiHandler.newBookForm.close();
             }
         })
     }
@@ -180,42 +121,42 @@ class FormHandler {
         
         if (this.title.value === "") {
             isValid = false;
-            this.addErrorMessage(this.title, "empty");
+            uiHandler.addErrorMessage(this.title, "empty");
         }
 
         if (this.author.value === "") {
             isValid = false;
-            this.addErrorMessage(this.author, "empty");
+            uiHandler.addErrorMessage(this.author, "empty");
         }
 
         let genresResult = this.isValidGenres(this.genres.value);
         if (this.genres.value === "") {
             isValid = false;
-            this.addErrorMessage(this.genres, "empty");
+            uiHandler.addErrorMessage(this.genres, "empty");
         } else {
             if (!genresResult.isValid) {
                 isValid = false;
-                this.addErrorMessage(this.genres, "invalid");
+                uiHandler.addErrorMessage(this.genres, "invalid");
             }
         }
 
         if (this.pages.value === "") {
             isValid = false;
-            this.addErrorMessage(this.pages, "empty");
+            uiHandler.addErrorMessage(this.pages, "empty");
         }
 
         if (this.published.value === "") {
             isValid = false;
-            this.addErrorMessage(this.published, "empty");
+            uiHandler.addErrorMessage(this.published, "empty");
         } else if (!this.isValidYear(this.published.value)) {
             isValid = false;
-            this.addErrorMessage(this.published, "invalid");
+            uiHandler.addErrorMessage(this.published, "invalid");
         }
 
         let sequelsResult = this.isValidSequels(this.sequels.value);
         if (this.sequels.value !== "" && !sequelsResult.isValid) {
             isValid = false;
-            this.addErrorMessage(this.sequels, "invalid");
+            uiHandler.addErrorMessage(this.sequels, "invalid");
         }
 
         return { 
@@ -243,7 +184,7 @@ class FormHandler {
     isValidSequels(sequels) {
         let sequelsArray = sequels.match(/"([^"]*)"/g);
         if (!sequelsArray) return { isValid: false, sequelsArray: [] };
-        sequelsArray = formatInput(sequelsArray, "Sequels");
+        sequelsArray = this.formatInput(sequelsArray, "Sequels");
         return { isValid: sequelsArray.length > 0, sequelsArray };
     }
 
@@ -289,6 +230,89 @@ class FormHandler {
                 })
                 .join(" ");
         }
+    }  
+
+    clearErrorMessages() {
+        this.form.querySelectorAll(".message").forEach(message => message.remove());
+    }
+
+    clearForm() {
+        this.form.reset();
+    }
+}
+
+class UIHandler {
+    constructor() {
+        // Shelf elements
+        this.newBookForm = document.querySelector(".new-book-display");
+        this.newBookButton = document.querySelector(".new-book-icon");
+
+        this.newBookButton.addEventListener("click", () => {
+            this.newBookForm.showModal();
+        })
+        // SVG for shelf icons
+        this.openBookIconSVG = `
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M560-564v-68q33-14 67.5-21t72.5-7q26 0 51 4t49 10v64q-24-9-48.5-13.5T700-600q-38 0-73 9.5T560-564Zm0 220v-68q33-14 67.5-21t72.5-7q26 0 51 4t49 10v64q-24-9-48.5-13.5T700-380q-38 0-73 9t-67 27Zm0-110v-68q33-14 67.5-21t72.5-7q26 0 51 4t49 10v64q-24-9-48.5-13.5T700-490q-38 0-73 9.5T560-454ZM260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 118q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59ZM280-494Z"/></svg>
+        `;
+        this.removeBookIconSVG = `
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+        `;
+        this.addBookIconSVG = `
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0-560v560-560Z"/></svg>
+        `;
+        // Book display elements
+        this.display = document.querySelector(".book-display");
+        this.closeBookButton = document.querySelector("#close-book");
+        this.changeReadButton = document.querySelector("#change-read-status");
+        this.removeBookButton = document.querySelector("#remove-book-button");
+        this.bookTitle = document.querySelector("#book-title");
+        this.bookAuthor = document.querySelector("#book-author");
+        this.bookGenres = document.querySelector("#book-genres");
+        this.bookPages = document.querySelector("#book-pages");
+        this.bookPublished = document.querySelector("#book-published");
+        this.bookRead = document.querySelector("#book-read");
+        this.bookSequels = document.querySelector("#book-sequels");
+        this.changeReadButton = document.querySelector("#change-read-status");
+
+        this.changeReadButton.addEventListener("click", () => {
+            this.currentBook.changeReadStatus();
+        })        
+
+        this.closeBookButton.addEventListener("click", () => {
+            this.closeBook();
+        })
+
+        this.removeBookButton.addEventListener("click", () => {
+            shelf.removeBook(this.currentBook);
+            this.closeBook();
+        })
+    }
+
+    displayBook(book) {      
+        //Populate the display with book details
+        this.bookTitle.textContent = `Title: ${book.title}`;
+        this.bookAuthor.textContent = `Author: ${book.author}`;
+        this.bookGenres.textContent = `Genres: ${book.genres}`;
+        this.bookPages.textContent = `Pages: ${book.pages}`;
+        this.bookPublished.textContent = `Year published: ${book.published}`;
+        this.bookRead.textContent = `${book.haveRead ? "You have read this book" : "You haven't finished this book yet"}`;
+        this.bookSequels.textContent = `Sequels: ${book.sequels}`;
+        this.changeReadButton.textContent = `${book.haveRead ? "I haven't finished this book yet" : "I have read this book"}`;
+        this.currentBook = book;
+        // Show the book modal
+        this.display.classList.add("flex");
+        this.display.showModal();    
+    }
+
+    changeReadStatus(book) {
+        book.changeReadStatus(); // Call the method on the passed book instance
+        this.bookRead.textContent = `${book.haveRead ? "You have read this book" : "You haven't finished this book yet"}`;
+        this.changeReadButton.textContent = `${book.haveRead ? "I haven't finished this book yet" : "I have read this book"}`;
+    }
+
+    closeBook() {
+        this.display.close();
+        this.display.classList.remove("flex");
     }
 
     addErrorMessage(input, reason) {
@@ -304,20 +328,12 @@ class FormHandler {
             published_invalid: "*Please enter a valid year (before 2026).",
             sequels_invalid: "Sequels must be in quotes, separated by commas."
         };
-
         errorMessage.textContent = messages[`${input.id}_${reason}`] || "Invalid input.";
         formRow.appendChild(errorMessage);
-    }
-
-    clearErrorMessages() {
-        this.form.querySelectorAll(".message").forEach(message => message.remove());
-    }
-
-    clearForm() {
-        this.form.reset();
-    }
+    }    
 }
 
-const formHandler = new FormHandler(formElement);
-refreshShelf();
-
+const formHandler = new FormHandler(document.querySelector("#new-book-form"));
+const shelf = new Shelf(document.querySelector(".shelf"));
+const uiHandler = new UIHandler();
+shelf.refreshShelf();
